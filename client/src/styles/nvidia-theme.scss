@@ -159,6 +159,7 @@ body {
 
 #root {
   min-height: 100vh;
+  min-height: 100dvh;
 }
 
 // ------------------------------------------
@@ -295,9 +296,10 @@ body {
 
 .h-full { height: 100%; }
 .h-auto { height: auto; }
-.h-screen { height: 100vh; }
+.h-screen { height: 100vh; height: 100dvh; }
 .min-h-screen { min-height: 100vh; }
 .min-h-0 { min-height: 0; }
+.min-w-0 { min-width: 0; }
 
 // ------------------------------------------
 // Typography Utilities
@@ -667,6 +669,8 @@ body {
 }
 
 .sidebar-panel {
+  width: 300px;
+  flex-shrink: 0;
   gap: var(--space-3);
   overflow: hidden;
   padding: var(--space-3);
@@ -2632,4 +2636,157 @@ body {
 @keyframes idleFadeOut {
   from { opacity: 1; }
   to { opacity: 0; }
+}
+
+// ------------------------------------------
+// Responsive Layout
+// ------------------------------------------
+// Adjust these two breakpoints to tune which devices get which layout.
+//   width >= $bp-tablet          desktop: settings | agent | status columns
+//   $bp-phone <= width < tablet  tablet (iPad): settings | agent or status
+//   width < $bp-phone            phone (iPhone): one panel at a time
+$bp-phone: 700px;
+$bp-tablet: 1200px;
+$tablet-panel-width: 260px;
+
+.mobile-view-switcher {
+  display: none;
+}
+
+// Shared by phone and tablet layouts.
+@media (max-width: #{$bp-tablet - 1px}) {
+  .app-shell {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .app-header {
+    padding-top: calc(var(--space-3) + env(safe-area-inset-top));
+  }
+
+  .app-header__row {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .app-header__actions {
+    min-width: 0;
+    margin-left: auto;
+    gap: var(--space-2);
+  }
+
+  .header-device-menu {
+    min-width: 0;
+    width: max-content;
+    max-width: calc(100vw - 2 * var(--space-4));
+  }
+
+  .mobile-view-switcher {
+    display: flex;
+    gap: var(--space-1);
+    padding: var(--space-2) var(--space-3);
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-subtle);
+
+    .tab-btn {
+      flex: 1;
+      padding: var(--space-2) var(--space-1);
+    }
+  }
+
+  .app-panels {
+    > .center-panel,
+    > .sidebar-panel {
+      display: none;
+      flex: 1;
+      width: auto;
+      min-width: 0;
+    }
+
+    > .sidebar-panel { overflow-y: auto; }
+    &.mobile-view-status > .sidebar-panel { display: flex; }
+    &:not(.mobile-view-status) > .center-panel { display: flex; }
+  }
+
+  // Inner tabs scroll horizontally instead of overflowing the screen.
+  .tab-header {
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: var(--space-2) var(--space-3);
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  .tab-btn {
+    flex-shrink: 0;
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .attachment-preview-media audio {
+    width: 100%;
+  }
+
+  // iOS Safari zooms into focused fields whose font size is below 16px.
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+// Tablet: settings stay docked on the left; the switcher picks what fills
+// the remaining space.
+@media (min-width: $bp-phone) and (max-width: #{$bp-tablet - 1px}) {
+  .status-panel {
+    width: $tablet-panel-width;
+    min-width: $tablet-panel-width;
+  }
+
+  .mobile-view-switcher {
+    justify-content: flex-end;
+
+    .tab-btn {
+      flex: 0 0 auto;
+      padding: var(--space-2) var(--space-5);
+    }
+
+    [data-view="settings"] { display: none; }
+  }
+
+  .sidebar-panel { border-left: 1px solid var(--border-default); }
+}
+
+// Phone: one full-width panel at a time.
+@media (max-width: #{$bp-phone - 1px}) {
+  .header-devices .device-row { width: 132px; }
+
+  .app-panels {
+    > .status-panel {
+      display: none;
+      flex: 1;
+      width: 100%;
+      min-width: 0;
+      border: none;
+    }
+
+    &.mobile-view-settings > .status-panel { display: flex; }
+    &.mobile-view-settings > .center-panel { display: none; }
+  }
+
+  .metrics-grid,
+  .metrics-column-groups {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .settings-row .select-dark { max-width: none; }
+
+  .idle-hero {
+    padding: var(--space-8) var(--space-4) 0;
+
+    &__title { font-size: 1.5rem; }
+    &__subtitle { font-size: 1rem; }
+    &__hint { white-space: normal; }
+  }
 }

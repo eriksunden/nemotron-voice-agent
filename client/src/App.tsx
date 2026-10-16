@@ -19,6 +19,14 @@ const EMPTY_ICE_SERVERS: RTCIceServer[] = [];
 const DEFAULT_AUDIO_INPUT_SAMPLE_RATE = 16000;
 const DEFAULT_AUDIO_OUTPUT_SAMPLE_RATE = 22050;
 type ProviderClient = ComponentProps<typeof PipecatClientProvider>["client"];
+type MobileView = "settings" | "main" | "status";
+
+// On narrow screens only one of the three panels is shown at a time.
+const MOBILE_VIEWS: { id: MobileView; label: string }[] = [
+  { id: "settings", label: "SETTINGS" },
+  { id: "main", label: "AGENT" },
+  { id: "status", label: "STATUS" },
+];
 
 type ClientSessionProps = {
   iceServers: RTCIceServer[];
@@ -36,6 +44,7 @@ function ClientSession({
   selectedTransport,
 }: Readonly<ClientSessionProps>) {
   const { currentSessionId } = useApp();
+  const [mobileView, setMobileView] = useState<MobileView>("main");
   const [client] = useState(() => {
     if (selectedTransport === "websocket") {
       return new PipecatClient({
@@ -57,9 +66,22 @@ function ClientSession({
 
   return (
     <PipecatClientProvider client={client as unknown as ProviderClient}>
-      <div className="h-screen d-flex flex-col overflow-hidden">
+      <div className="app-shell h-screen d-flex flex-col overflow-hidden">
         <Header onClientReset={onClientReset} />
-        <div className="flex-1 d-flex overflow-hidden">
+        <nav className="mobile-view-switcher" aria-label="Panels">
+          {MOBILE_VIEWS.map((view) => (
+            <button
+              key={view.id}
+              data-view={view.id}
+              className={`tab-btn ${mobileView === view.id ? "active" : ""}`}
+              aria-pressed={mobileView === view.id}
+              onClick={() => setMobileView(view.id)}
+            >
+              {view.label}
+            </button>
+          ))}
+        </nav>
+        <div className={`app-panels mobile-view-${mobileView} flex-1 min-h-0 d-flex overflow-hidden`}>
           <StatusPanel />
           <CenterPanel />
           <Sidebar />

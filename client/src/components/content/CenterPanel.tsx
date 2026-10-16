@@ -36,7 +36,7 @@ export function CenterPanel() {
   const [activeTab, setActiveTab] = useState<Tab>("conversation");
 
   return (
-    <main className="flex-1 d-flex flex-col overflow-hidden">
+    <main className="center-panel flex-1 min-w-0 d-flex flex-col overflow-hidden">
       <div className="tab-header">
         {ALL_TABS.map((tab) => (
           <button

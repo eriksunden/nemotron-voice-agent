@@ -15,6 +15,7 @@ It is a React and TypeScript single-page app built with [Vite](https://vite.dev/
 - **Metrics dashboard**: time-to-first-byte latency charts, token usage, and connection status.
 - **Conversation transcript**: live ASR and bot-response display.
 - **Webcam vision panel**: live webcam input for the multimodal Omni Subagents example.
+- **Responsive layout**: the UI adapts to phones, tablets, and desktops. On screens narrower than 700 px, such as an iPhone, the **SETTINGS**, **AGENT**, and **STATUS** switcher shows one panel at a time. From 700 px to 1,199 px, such as an iPad, settings stay docked on the left and the **AGENT** and **STATUS** switcher controls the rest of the screen. To change these breakpoints, edit `$bp-phone` and `$bp-tablet` in `src/styles/nvidia-theme.scss`.
 
 ## Getting started
 

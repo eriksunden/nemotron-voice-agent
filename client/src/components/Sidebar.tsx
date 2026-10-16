@@ -26,7 +26,7 @@ export function Sidebar() {
   const canUseWebcam = selectedExample?.capabilities?.includes("webcam") ?? false;
 
   return (
-    <aside className="sidebar-panel d-flex flex-col" style={{ width: "300px" }}>
+    <aside className="sidebar-panel d-flex flex-col">
       <StatusSection />
       <SessionSection />
 

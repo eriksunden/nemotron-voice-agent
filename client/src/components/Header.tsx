@@ -257,12 +257,12 @@ export function Header({ onClientReset }: Readonly<HeaderProps>) {
   }
 
   return (
-    <header className="px-4 py-3 border-b">
-      <div className="d-flex justify-between items-center">
+    <header className="app-header px-4 py-3 border-b">
+      <div className="app-header__row d-flex justify-between items-center">
         <h1 className="text-lg font-semibold">
           <span style={{ color: "#76b900", fontWeight: 700, letterSpacing: "0.08em" }}>Nemotron</span> Voice Agent
         </h1>
-        <div className="d-flex items-center gap-3">
+        <div className="app-header__actions d-flex items-center gap-3">
           {isConnected && <DevicesSection />}
           <button
             className={isConnected ? "btn-secondary" : "btn-primary"}
