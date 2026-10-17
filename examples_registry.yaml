@@ -29,7 +29,7 @@ examples:
       second_warning_s: 30
       warning_completion_timeout_s: 45
     defaults:
-      prompt: [generic_assistant]
+      prompt: [tellus_earth]
       llm: [nemotron-lightning]
       asr: [nemotron-asr-streaming-english]
       tts: [magpie-multilingual-tts]

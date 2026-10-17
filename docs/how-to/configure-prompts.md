@@ -18,6 +18,7 @@ Prompt presets are defined per example. The Generic Cascaded example currently p
 |------------|-------------|
 | `generic_assistant` | Generic voice assistant with tool support and a single-sentence response format. |
 | `generic_assistant_without_tools` | Generic voice assistant without tool access and with a single-sentence response format. |
+| `tellus_earth` | TellUs persona that speaks as planet Earth and shares uplifting facts with kids aged 9 to 11. This is the Generic Assistant default. |
 | `flowershop` | Flora persona for the GreenForce Garden flower-shop scenario with strict flow rules. |
 
 ## Changing the Default Prompt
